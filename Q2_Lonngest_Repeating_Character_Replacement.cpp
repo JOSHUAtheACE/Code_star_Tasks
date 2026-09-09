@@ -6,23 +6,22 @@
  class Solution {
 public:
     int characterReplacement(string s, int k) {
-        if(s.empty()) return 0;
-        int i=0, j=0, count=k, best=0;  
-        while(j < s.size()) {
-            if(s[j] == s[i]) {
-                j++;
-            } else {
-                count--;
-                if(count < 0) {
-                    i = j;
-                    count = k;
-                }
-                j++;
+        unordered_map<char,int> seen;
+        int i,j,best=0,Max;
+        i=0,j=0;
+        while(j<s.size()){
+            seen[s[j]]++;
+            Max=0;
+            for(auto& p:seen)Max=max(Max,p.second);
+            while(j-i+1-Max>k){
+                seen[s[i]]--;
+                if(seen[s[i]]==0)seen.erase(seen[s[i]]);
+                i++;
             }
-            best = max(best, j - i);  
+            best=max(best,j-i+1);
+            j++;
+        
         }
         return best;
     }
 };
-
- 
